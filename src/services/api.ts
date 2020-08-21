@@ -1,10 +1,9 @@
 import axios from 'axios';
 
 const originalURL = 'https://sandbox.mercos.com/api-teste-front';
-const endpointURL = `https://cors-anywhere.herokuapp.com/${originalURL}`;
 
 const api = axios.create({
-  baseURL: endpointURL,
+  baseURL: `https://cors-anywhere.herokuapp.com/${originalURL}`,
 });
 
 export default api;
