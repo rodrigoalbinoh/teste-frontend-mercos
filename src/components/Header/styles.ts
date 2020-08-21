@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.header``;
 
-export const InnerContainer = styled.div`
+export const ContainerContent = styled.div`
   max-width: 1180px;
   margin: 0 auto;
 `;
@@ -21,8 +21,7 @@ export const ContactInfo = styled.span`
   font-size: 12px;
 
   svg {
-    width: 20px;
-    height: 20px;
+    font-size: 20px;
     margin-right: 5px;
   }
 `;
@@ -33,7 +32,8 @@ export const UserInfo = styled.div`
   span {
     display: flex;
     align-items: center;
-    font-family: 'Roboto-Regular', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-size: 500;
     line-height: 20px;
     font-size: 12px;
 
@@ -42,8 +42,7 @@ export const UserInfo = styled.div`
     }
 
     svg {
-      width: 20px;
-      height: 20px;
+      font-size: 20px;
       margin-right: 5px;
     }
   }
@@ -67,8 +66,7 @@ export const MenuLinks = styled.div`
   align-items: center;
 
   a {
-    display: inline-flex;
-    vertical-align: middle;
+    display: flex;
     text-decoration: none;
     color: #212121;
     font-family: 'Roboto', sans-serif;
@@ -82,6 +80,7 @@ export const MenuLinks = styled.div`
     }
 
     svg {
+      font-size: 24px;
       margin-right: 5px;
     }
   }
@@ -134,6 +133,7 @@ export const CartContainer = styled.div`
     }
 
     svg {
+      font-size: 24px;
       margin-right: 5px;
       color: #e53935;
     }

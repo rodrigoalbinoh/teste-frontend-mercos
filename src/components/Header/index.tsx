@@ -11,7 +11,7 @@ import {
 import logo from '../../assets/sua-marca.png';
 import {
   Container,
-  InnerContainer,
+  ContainerContent,
   Topbar,
   ContactInfo,
   UserInfo,
@@ -25,7 +25,7 @@ import {
 const Header: React.FC = () => {
   return (
     <Container>
-      <InnerContainer>
+      <ContainerContent>
         <Topbar>
           <ContactInfo>
             <WhatsApp />
@@ -73,7 +73,7 @@ const Header: React.FC = () => {
             </a>
           </CartContainer>
         </MenuContainer>
-      </InnerContainer>
+      </ContainerContent>
     </Container>
   );
 };
