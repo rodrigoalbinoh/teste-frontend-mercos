@@ -1,9 +1,13 @@
 import React from 'react';
+import Header from '../../components/Header';
 
 const Cart: React.FC = () => {
-  return(
-    <h1>Carrinho</h1>
+  return (
+    <>
+      <Header />
+      <h1>Carrinho</h1>
+    </>
   );
-}
+};
 
 export default Cart;

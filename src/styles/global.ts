@@ -16,6 +16,11 @@ export default createGlobalStyle`
   body, input, button {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
+    color: #212121;
+  }
+
+  #root {
+    margin: 0 auto;
   }
 
   h1, h2, h3, h4, h5, h6, strong{
