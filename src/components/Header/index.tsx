@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   WhatsApp,
   Person,
@@ -21,8 +21,29 @@ import {
   SearchContainer,
   CartContainer,
 } from './styles';
+import { useCart } from '../../hooks/cart';
+import formatValue from '../../utils/formatValue';
 
 const Header: React.FC = () => {
+  const { products } = useCart();
+
+  const cartTotal = useMemo(() => {
+    const { total } = products.reduce(
+      (accumulator, product) => {
+        const subtotal = product.quantidade * product.valor_unitario;
+
+        accumulator.total += subtotal;
+
+        return accumulator;
+      },
+      {
+        total: 0,
+      },
+    );
+
+    return formatValue(total);
+  }, [products]);
+
   return (
     <Container>
       <ContainerContent>
@@ -67,9 +88,9 @@ const Header: React.FC = () => {
             </form>
           </SearchContainer>
           <CartContainer>
-            <a href="/cart">
+            <a href="/">
               <ShoppingCart />
-              R$ 62,50
+              {cartTotal}
             </a>
           </CartContainer>
         </MenuContainer>

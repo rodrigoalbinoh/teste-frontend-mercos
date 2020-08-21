@@ -1,5 +1,8 @@
 import React from 'react';
 
+import Header from '../../components/Header';
+import HeaderInformationBar from '../../components/HeaderInformationBar';
+
 const Cart: React.FC = () => {
   return (
     <>
