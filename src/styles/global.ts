@@ -19,6 +19,10 @@ export default createGlobalStyle`
     color: #212121;
   }
 
+  svg {
+    font-size: 20px;
+  }
+
   #root {
     margin: 0 auto;
   }
