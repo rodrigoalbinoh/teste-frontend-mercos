@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { shade } from 'polished';
 
 export const Container = styled.div`
   display: flex;
@@ -50,6 +51,10 @@ export const ProductInfo = styled.div`
     font-size: 12px;
     line-height: 20px;
 
+    &:hover {
+      color: ${shade(0.2, '#e53935')};
+    }
+
     svg {
       font-size: 20px;
       margin-right: 10px;
@@ -75,6 +80,10 @@ export const QuantityContainer = styled.div`
       color: #e53935;
       display: flex;
       align-items: center;
+
+      &:hover {
+        color: ${shade(0.2, '#e53935')};
+      }
     }
   }
 `;
@@ -98,6 +107,10 @@ export const TotalDeleteContainer = styled.div`
     background: none;
     border: none;
     color: #e53935;
+
+    &:hover {
+      color: ${shade(0.2, '#e53935')};
+    }
 
     svg {
       font-size: 20px;
