@@ -25,24 +25,7 @@ import { useCart } from '../../hooks/cart';
 import formatValue from '../../utils/formatValue';
 
 const Header: React.FC = () => {
-  const { products } = useCart();
-
-  const cartTotal = useMemo(() => {
-    const { total } = products.reduce(
-      (accumulator, product) => {
-        const subtotal = product.quantidade * product.valor_unitario;
-
-        accumulator.total += subtotal;
-
-        return accumulator;
-      },
-      {
-        total: 0,
-      },
-    );
-
-    return formatValue(total);
-  }, [products]);
+  const { cartTotal } = useCart();
 
   return (
     <Container>
@@ -90,7 +73,7 @@ const Header: React.FC = () => {
           <CartContainer>
             <a href="/">
               <ShoppingCart />
-              {cartTotal}
+              {formatValue(cartTotal)}
             </a>
           </CartContainer>
         </MenuContainer>

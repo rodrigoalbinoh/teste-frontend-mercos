@@ -7,6 +7,7 @@ import React, {
   useMemo,
 } from 'react';
 import api from '../services/api';
+import formatValue from '../utils/formatValue';
 
 interface Product {
   sku: string;
@@ -18,8 +19,18 @@ interface Product {
   observacao?: string;
 }
 
+interface Discount {
+  desconto_percentual: number;
+  tipo: string;
+  valor: number;
+}
+
 interface CartContextData {
   products: Product[];
+  cartTotal: number;
+  cartSubtotal: number;
+  totalItens: number;
+  discountValue: number;
   increment(id: number): void;
   decrement(id: number): void;
   removeFromCart(id: number): void;
@@ -29,6 +40,10 @@ interface CartContextData {
 const CartContext = createContext<CartContextData>({} as CartContextData);
 
 export const CartProvider: React.FC = ({ children }) => {
+  const [cartTotal, setCartTotal] = useState(0);
+  const [cartSubtotal, setCartSubtotal] = useState(0);
+  const [discountValue, setDiscountValue] = useState(0);
+  const [discountRules, setDiscountRules] = useState<Discount[]>([]);
   const [products, setProducts] = useState<Product[]>(() => {
     const loadedProducts = localStorage.getItem('@TesteMercos:products');
 
@@ -37,11 +52,76 @@ export const CartProvider: React.FC = ({ children }) => {
     }
   });
 
+  const totalItens = useMemo(() => {
+    const { total } = products.reduce(
+      (accumulator, product) => {
+        accumulator.total += product.quantidade;
+
+        return accumulator;
+      },
+      {
+        total: 0,
+      },
+    );
+
+    return total;
+  }, [products]);
+
+  useEffect(() => {
+    const applicableDiscounts: Discount[] = [];
+
+    discountRules.map((discount) => {
+      if (discount.tipo === 'valor_minimo') {
+        if (cartSubtotal >= discount.valor) {
+          applicableDiscounts.push(discount);
+        }
+      }
+
+      if (discount.tipo === 'quantidade_itens_minima') {
+        if (totalItens >= discount.valor) {
+          applicableDiscounts.push(discount);
+        }
+      }
+    });
+
+    if (applicableDiscounts.length) {
+      const { desconto_percentual } =
+        applicableDiscounts.length === 1
+          ? applicableDiscounts[0]
+          : applicableDiscounts.reduce((prev, current) => {
+              if (prev) {
+                return prev.desconto_percentual > current.desconto_percentual
+                  ? prev
+                  : current;
+              }
+
+              return current;
+            });
+
+      const discount = cartSubtotal * (desconto_percentual / 100);
+
+      setDiscountValue(discount);
+      setCartTotal(cartSubtotal - discount);
+      return;
+    }
+
+    setCartTotal(cartSubtotal);
+    setDiscountValue(0);
+  }, [cartSubtotal, discountRules, totalItens]);
+
+  useEffect(() => {
+    async function loadDiscountRules(): Promise<void> {
+      const response = await api.get('/politicas-comerciais/');
+
+      setDiscountRules(response.data);
+    }
+
+    loadDiscountRules();
+  }, []);
+
   useEffect(() => {
     async function loadProducts(): Promise<void> {
       const response = await api.get('/carrinho/');
-
-      console.log(response.data);
 
       setProducts(response.data);
     }
@@ -54,6 +134,23 @@ export const CartProvider: React.FC = ({ children }) => {
     }
 
     updateLocalStorage();
+  }, [products]);
+
+  useEffect(() => {
+    const { total } = products.reduce(
+      (accumulator, product) => {
+        const subtotal = product.quantidade * product.valor_unitario;
+
+        accumulator.total += subtotal;
+
+        return accumulator;
+      },
+      {
+        total: 0,
+      },
+    );
+
+    setCartSubtotal(total);
   }, [products]);
 
   const increment = useCallback(
@@ -151,13 +248,27 @@ export const CartProvider: React.FC = ({ children }) => {
 
   const value = useMemo(
     () => ({
+      products,
+      cartTotal,
+      cartSubtotal,
+      totalItens,
+      discountValue,
       increment,
       decrement,
       removeFromCart,
       addObservation,
-      products,
     }),
-    [addObservation, decrement, increment, products, removeFromCart],
+    [
+      products,
+      cartTotal,
+      cartSubtotal,
+      totalItens,
+      discountValue,
+      increment,
+      decrement,
+      removeFromCart,
+      addObservation,
+    ],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

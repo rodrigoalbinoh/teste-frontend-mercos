@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { useCart } from '../../hooks/cart';
 import formatValue from '../../utils/formatValue';
@@ -16,39 +16,13 @@ import {
 import CartItem from '../../components/CartItem';
 
 const Cart: React.FC = () => {
-  const { products } = useCart();
-
-  const totalItens = useMemo(() => {
-    const { total } = products.reduce(
-      (accumulator, product) => {
-        accumulator.total += product.quantidade;
-
-        return accumulator;
-      },
-      {
-        total: 0,
-      },
-    );
-
-    return total;
-  }, [products]);
-
-  const cartSubtotal = useMemo(() => {
-    const { total } = products.reduce(
-      (accumulator, product) => {
-        const subtotal = product.quantidade * product.valor_unitario;
-
-        accumulator.total += subtotal;
-
-        return accumulator;
-      },
-      {
-        total: 0,
-      },
-    );
-
-    return formatValue(total);
-  }, [products]);
+  const {
+    products,
+    cartTotal,
+    discountValue,
+    cartSubtotal,
+    totalItens,
+  } = useCart();
 
   return (
     <Container>
@@ -79,16 +53,16 @@ const Cart: React.FC = () => {
               </div>
               <div>
                 <span>Total em Produtos</span>
-                <strong>{cartSubtotal}</strong>
+                <strong>{formatValue(cartSubtotal)}</strong>
               </div>
               <div>
                 <span>Descontos</span>
-                <strong>{cartSubtotal}</strong>
+                <strong>{formatValue(discountValue)}</strong>
               </div>
             </CartInfo>
             <Total>
               <strong>Total</strong>
-              <strong>{cartSubtotal}</strong>
+              <strong>{formatValue(cartTotal)}</strong>
             </Total>
             <CheckoutButton type="button">Finalizar compra</CheckoutButton>
           </div>
