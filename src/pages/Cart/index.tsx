@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { useHistory } from 'react-router-dom';
 import { useCart } from '../../hooks/cart';
 import formatValue from '../../utils/formatValue';
 
@@ -12,16 +13,12 @@ import {
   CartInfo,
   Total,
   CheckoutButton,
-} from './style';
+} from './styles';
 import CartItem from '../../components/CartItem';
 import ModalAddObservation from '../../components/ModalAddObservation';
 
 interface EditingProduct {
   id: number;
-  observacao: string;
-}
-
-interface ObservationData {
   observacao: string;
 }
 
@@ -41,17 +38,15 @@ const Cart: React.FC = () => {
     addObservation,
   } = useCart();
 
+  const history = useHistory();
+
   function handleAddObservation({
     observacao,
-  }: Omit<ObservationData, 'id'>): void {
+  }: Omit<EditingProduct, 'id'>): void {
     addObservation({
       id: editingProduct.id,
       observacao,
     });
-  }
-
-  function toggleModal(): void {
-    setModalOpen(!modalOpen);
   }
 
   function toggleEditModal(): void {
@@ -104,7 +99,12 @@ const Cart: React.FC = () => {
               <strong>Total</strong>
               <strong>{formatValue(cartTotal)}</strong>
             </Total>
-            <CheckoutButton type="button">Finalizar compra</CheckoutButton>
+            <CheckoutButton
+              type="button"
+              onClick={() => history.push('/checkout')}
+            >
+              Finalizar compra
+            </CheckoutButton>
           </div>
         </CartSummary>
       </Content>
