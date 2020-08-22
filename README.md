@@ -11,7 +11,7 @@ Teste Frontend Mercos - Sua Marca
     <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License MIT">
   </a>
   <a href="https://github.com/rodrigoalbinoh/teste-frontend-mercos/commits/master">
-    <img src="https://img.shields.io/github/commit-activity/m/rodrigoalbinoh/teste-frontend-mercos" alt="Commit Activity per Month">
+    <img src="https://img.shields.io/github/commit-activity/y/rodrigoalbinoh/teste-frontend-mercos" alt="Commit Activity per Month">
   </a>
 </p>
 
