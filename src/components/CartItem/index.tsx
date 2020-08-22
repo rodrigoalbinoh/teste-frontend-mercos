@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ChatBubbleOutline, Remove, Add, Delete } from '@material-ui/icons';
 
 import { useCart } from '../../hooks/cart';

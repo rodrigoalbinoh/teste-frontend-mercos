@@ -37,7 +37,7 @@ const InputMask: React.FC<Props> = ({ name, label, ...rest }) => {
   return (
     <Container>
       <label htmlFor={fieldName}>{label}</label>
-      <Field isFocused={isFocused}>
+      <Field isFocused={isFocused} isErrored={!!error}>
         <ReactInputMask
           ref={inputRef}
           defaultValue={defaultValue}
@@ -46,6 +46,7 @@ const InputMask: React.FC<Props> = ({ name, label, ...rest }) => {
           {...rest}
         />
       </Field>
+      {error && <span>{error}</span>}
     </Container>
   );
 };

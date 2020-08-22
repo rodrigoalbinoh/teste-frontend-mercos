@@ -20,7 +20,7 @@ const Input: React.FC<InputProps> = ({ name, label, ...rest }) => {
 
   const [isFocused, setIsFocused] = useState(false);
 
-  const { fieldName, defaultValue, registerField } = useField(name);
+  const { fieldName, defaultValue, error, registerField } = useField(name);
 
   const handleInputFocus = useCallback(() => {
     setIsFocused(true);
@@ -41,7 +41,7 @@ const Input: React.FC<InputProps> = ({ name, label, ...rest }) => {
   return (
     <Container>
       {label && <label htmlFor={fieldName}>{label}</label>}
-      <Field isFocused={isFocused}>
+      <Field isFocused={isFocused} isErrored={!!error}>
         <input
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
@@ -50,6 +50,7 @@ const Input: React.FC<InputProps> = ({ name, label, ...rest }) => {
           {...rest}
         />
       </Field>
+      {error && <span>{error}</span>}
     </Container>
   );
 };

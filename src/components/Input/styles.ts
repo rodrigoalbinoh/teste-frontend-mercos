@@ -2,10 +2,16 @@ import styled, { css } from 'styled-components';
 
 interface FieldProps {
   isFocused: boolean;
+  isErrored: boolean;
 }
 
 export const Container = styled.div`
   margin: 10px 10px 0 10px;
+
+  span {
+    color: #e53935;
+    font-size: 12px;
+  }
 `;
 
 export const Field = styled.div<FieldProps>`
@@ -31,7 +37,12 @@ export const Field = styled.div<FieldProps>`
   ${(props) =>
     props.isFocused &&
     css`
-      color: #e53935;
+      border-color: #e53935;
+    `}
+
+  ${(props) =>
+    props.isErrored &&
+    css`
       border-color: #e53935;
     `}
 

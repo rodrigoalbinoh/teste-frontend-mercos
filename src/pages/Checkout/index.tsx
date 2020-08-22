@@ -1,7 +1,10 @@
 import React, { useRef, useCallback } from 'react';
+import * as Yup from 'yup';
+
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 
+import getValidationErrors from '../../utils/getValidationErrors';
 import Input from '../../components/Input';
 
 import {
@@ -32,9 +35,33 @@ const Checkout: React.FC = () => {
 
   const handleSubmit = useCallback(async (data: CheckoutData) => {
     try {
+      formRef.current?.setErrors({});
+
+      const schema = Yup.object().shape({
+        rua: Yup.string().required('Rua é um campo obrigatório'),
+        numero: Yup.string().required('Número é um campo obrigatório'),
+        bairro: Yup.string().required('Bairro é um campo obrigatório'),
+        numero_cartao: Yup.string().required(
+          'Número do Cartão é um campo obrigatório',
+        ),
+        cvc: Yup.string().required(
+          'Código de verificação é um campo obrigatório',
+        ),
+      });
+
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+
       console.log(data);
     } catch (err) {
-      console.log(err);
+      if (err instanceof Yup.ValidationError) {
+        const errors = getValidationErrors(err);
+
+        console.log(errors);
+
+        formRef.current?.setErrors(errors);
+      }
     }
   }, []);
 
