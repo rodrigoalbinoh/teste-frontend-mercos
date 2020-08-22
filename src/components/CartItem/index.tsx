@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ChatBubbleOutline, Remove, Add, Delete } from '@material-ui/icons';
 
 import { useCart } from '../../hooks/cart';
@@ -19,7 +19,13 @@ interface CartItemProps {
   quantidade: number;
   valor_unitario: number;
   url_imagem: string;
-  observacao?: string;
+  observacao: string;
+  handleAddObservation: (product: ProductObservation) => void;
+}
+
+interface ProductObservation {
+  id: number;
+  observacao: string;
 }
 
 const CartItem: React.FC<CartItemProps> = ({
@@ -30,10 +36,18 @@ const CartItem: React.FC<CartItemProps> = ({
   valor_unitario,
   url_imagem,
   observacao,
+  handleAddObservation,
 }) => {
   const { increment, decrement, removeFromCart } = useCart();
 
   const cartTotal = formatValue(quantidade * valor_unitario);
+
+  function setAddingObservation(): void {
+    handleAddObservation({
+      id,
+      observacao,
+    });
+  }
 
   return (
     <Container>
@@ -41,7 +55,7 @@ const CartItem: React.FC<CartItemProps> = ({
       <ProductInfo>
         <strong>{nome}</strong>
         <span>SKU: {sku}</span>
-        <button type="button">
+        <button type="button" onClick={() => setAddingObservation()}>
           <ChatBubbleOutline />
           Adicionar descrição
         </button>

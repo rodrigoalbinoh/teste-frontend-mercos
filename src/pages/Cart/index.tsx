@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useCart } from '../../hooks/cart';
 import formatValue from '../../utils/formatValue';
@@ -14,15 +14,54 @@ import {
   CheckoutButton,
 } from './style';
 import CartItem from '../../components/CartItem';
+import ModalAddObservation from '../../components/ModalAddObservation';
+
+interface EditingProduct {
+  id: number;
+  observacao: string;
+}
+
+interface ObservationData {
+  observacao: string;
+}
 
 const Cart: React.FC = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [observationModalOpen, setObservationModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<EditingProduct>(
+    {} as EditingProduct,
+  );
+
   const {
     products,
     cartTotal,
     discountValue,
     cartSubtotal,
     totalItens,
+    addObservation,
   } = useCart();
+
+  function handleAddObservation({
+    observacao,
+  }: Omit<ObservationData, 'id'>): void {
+    addObservation({
+      id: editingProduct.id,
+      observacao,
+    });
+  }
+
+  function toggleModal(): void {
+    setModalOpen(!modalOpen);
+  }
+
+  function toggleEditModal(): void {
+    setObservationModalOpen(!observationModalOpen);
+  }
+
+  function setAddingObservation(product: EditingProduct): void {
+    setEditingProduct(product);
+    toggleEditModal();
+  }
 
   return (
     <Container>
@@ -39,6 +78,7 @@ const Cart: React.FC = () => {
               url_imagem={product.url_imagem}
               valor_unitario={product.valor_unitario}
               observacao={product.observacao}
+              handleAddObservation={setAddingObservation}
             />
           ))}
         </CartItems>
@@ -68,6 +108,13 @@ const Cart: React.FC = () => {
           </div>
         </CartSummary>
       </Content>
+
+      <ModalAddObservation
+        isOpen={observationModalOpen}
+        setIsOpen={toggleEditModal}
+        addingObservation={editingProduct}
+        handleAddObservation={handleAddObservation}
+      />
     </Container>
   );
 };

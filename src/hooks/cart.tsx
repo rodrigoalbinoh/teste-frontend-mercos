@@ -15,7 +15,7 @@ interface Product {
   valor_unitario: number;
   url_imagem: string;
   id: number;
-  observacao?: string;
+  observacao: string;
 }
 
 interface Discount {
@@ -33,7 +33,7 @@ interface CartContextData {
   increment(id: number): void;
   decrement(id: number): void;
   removeFromCart(id: number): void;
-  addObservation(id: number, observation: string): void;
+  addObservation(product: { id: number; observacao: string }): void;
 }
 
 const CartContext = createContext<CartContextData>({} as CartContextData);
@@ -122,7 +122,28 @@ export const CartProvider: React.FC = ({ children }) => {
     async function loadProducts(): Promise<void> {
       const response = await api.get('/carrinho/');
 
-      setProducts(response.data);
+      const loadedProducts = response.data.map((product: Product) => {
+        const {
+          sku,
+          quantidade,
+          nome,
+          valor_unitario,
+          url_imagem,
+          id,
+        } = product;
+
+        return {
+          sku,
+          quantidade,
+          nome,
+          valor_unitario,
+          url_imagem,
+          id,
+          observacao: '',
+        };
+      });
+
+      setProducts(loadedProducts);
     }
     loadProducts();
   }, []);
@@ -156,9 +177,14 @@ export const CartProvider: React.FC = ({ children }) => {
     async (id) => {
       const productIndex = products.findIndex((product) => product.id === id);
 
-      const { nome, quantidade, sku, url_imagem, valor_unitario } = products[
-        productIndex
-      ];
+      const {
+        nome,
+        quantidade,
+        sku,
+        url_imagem,
+        valor_unitario,
+        observacao,
+      } = products[productIndex];
 
       const productsModified = [...products];
       const quantityModified = quantidade + 1;
@@ -169,6 +195,7 @@ export const CartProvider: React.FC = ({ children }) => {
         sku,
         url_imagem,
         valor_unitario,
+        observacao,
         quantidade: quantityModified,
       };
 
@@ -181,9 +208,14 @@ export const CartProvider: React.FC = ({ children }) => {
     async (id) => {
       const productIndex = products.findIndex((product) => product.id === id);
 
-      const { nome, quantidade, sku, url_imagem, valor_unitario } = products[
-        productIndex
-      ];
+      const {
+        nome,
+        quantidade,
+        sku,
+        url_imagem,
+        observacao,
+        valor_unitario,
+      } = products[productIndex];
 
       if (quantidade === 1) {
         const productsFiltered = products.filter(
@@ -202,6 +234,7 @@ export const CartProvider: React.FC = ({ children }) => {
           sku,
           url_imagem,
           valor_unitario,
+          observacao,
           quantidade: quantityModified,
         };
 
@@ -221,7 +254,7 @@ export const CartProvider: React.FC = ({ children }) => {
   );
 
   const addObservation = useCallback(
-    async (id, observacao) => {
+    async ({ id, observacao }) => {
       const productIndex = products.findIndex((product) => product.id === id);
 
       const { nome, quantidade, sku, url_imagem, valor_unitario } = products[
