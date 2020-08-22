@@ -13,6 +13,8 @@ export const Container = styled.div<ContainerProps>`
   padding: 18px 24px;
   width: 100%;
   font-size: 16px;
+  border: 1px solid #e0e0e0;
+
   & + div {
     margin-top: 24px;
   }
@@ -25,13 +27,13 @@ export const Container = styled.div<ContainerProps>`
   ${(props) =>
     props.isFocused &&
     css`
-      color: #ff9000;
-      border-color: #ff9000;
+      color: #e53935;
+      border-color: #e53935;
     `}
   ${(props) =>
     props.isFilled &&
     css`
-      color: #ff9000;
+      color: #e53935;
     `}
   input {
     flex: 1;
