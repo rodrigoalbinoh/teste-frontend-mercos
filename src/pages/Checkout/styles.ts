@@ -29,7 +29,7 @@ export const AddressInfo = styled.div`
 
   strong {
     display: block;
-    padding: 10px 20px;
+    padding: 10px 10px;
     margin-bottom: 20px;
     border-bottom: 1px solid #e0e0e0;
     color: #212121;
@@ -41,10 +41,18 @@ export const AddressInfo = styled.div`
   }
 `;
 
+export const FieldGroup = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  div {
+    flex: 1;
+  }
+`;
+
 export const CardInfoContainer = styled.aside`
   max-width: 320px;
   width: 100vw;
-  height: 300px;
   border: 1px solid #e0e0e0;
 
   > div {
@@ -62,6 +70,19 @@ export const CardInfoTitle = styled.strong`
   line-height: 25px;
   letter-spacing: 0.1px;
   text-transform: uppercase;
+`;
+
+export const Total = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+
+  strong {
+    font-size: 16px;
+    line-height: 30px;
+    font-weight: 700;
+  }
 `;
 
 export const CheckoutButton = styled.button`

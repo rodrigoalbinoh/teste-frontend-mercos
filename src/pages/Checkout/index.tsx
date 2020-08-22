@@ -8,10 +8,15 @@ import {
   Container,
   Content,
   AddressInfo,
+  FieldGroup,
   CardInfoContainer,
   CardInfoTitle,
+  Total,
   CheckoutButton,
 } from './styles';
+import formatValue from '../../utils/formatValue';
+import { useCart } from '../../hooks/cart';
+import InputMask from '../../components/InputMask';
 
 interface CheckoutData {
   rua: string;
@@ -23,9 +28,14 @@ interface CheckoutData {
 
 const Checkout: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const { cartTotal } = useCart();
 
-  const handleSubmit = useCallback((data: CheckoutData) => {
-    console.log(data);
+  const handleSubmit = useCallback(async (data: CheckoutData) => {
+    try {
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
 
   return (
@@ -36,19 +46,35 @@ const Checkout: React.FC = () => {
         <Form ref={formRef} onSubmit={handleSubmit}>
           <AddressInfo>
             <strong>Endereço</strong>
-            <Input name="rua" placeholder="Rua" />
-            <Input name="bairro" placeholder="Bairro" />
-            <Input name="numero" placeholder="Número" />
+            <FieldGroup>
+              <Input name="rua" placeholder="Rua" label="Rua" />
+              <Input name="numero" placeholder="Número" label="Número" />
+            </FieldGroup>
+            <Input name="bairro" placeholder="Bairro" label="Bairro" />
           </AddressInfo>
 
           <CardInfoContainer>
             <CardInfoTitle>Pagamento</CardInfoTitle>
             <div>
               <div>
-                <Input name="numero_cartao" placeholder="---- ---- ---- ----" />
-                <Input name="cvc" placeholder="CVC" />
+                <InputMask
+                  name="numero_cartao"
+                  label="Número do Cartão"
+                  placeholder="____ ____ ____ ____"
+                  mask="9999 9999 9999 9999"
+                />
+                <InputMask
+                  name="cvc"
+                  label="Código de Segurança"
+                  placeholder="CVC"
+                  mask="999"
+                />
               </div>
-              <CheckoutButton type="button">Pagar</CheckoutButton>
+              <Total>
+                <strong>Total</strong>
+                <strong>{formatValue(cartTotal)}</strong>
+              </Total>
+              <CheckoutButton type="submit">Pagar</CheckoutButton>
             </div>
           </CardInfoContainer>
         </Form>
