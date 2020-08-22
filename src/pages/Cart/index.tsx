@@ -23,7 +23,6 @@ interface EditingProduct {
 }
 
 const Cart: React.FC = () => {
-  const [modalOpen, setModalOpen] = useState(false);
   const [observationModalOpen, setObservationModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<EditingProduct>(
     {} as EditingProduct,
