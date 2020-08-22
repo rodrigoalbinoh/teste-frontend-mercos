@@ -7,7 +7,6 @@ import React, {
   useMemo,
 } from 'react';
 import api from '../services/api';
-import formatValue from '../utils/formatValue';
 
 interface Product {
   sku: string;
