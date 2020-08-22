@@ -20,6 +20,7 @@ import {
 import formatValue from '../../utils/formatValue';
 import { useCart } from '../../hooks/cart';
 import InputMask from '../../components/InputMask';
+import { useToast } from '../../hooks/toast';
 
 interface CheckoutData {
   rua: string;
@@ -32,6 +33,7 @@ interface CheckoutData {
 const Checkout: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { cartTotal } = useCart();
+  const { addToast } = useToast();
 
   const handleSubmit = useCallback(async (data: CheckoutData) => {
     try {
@@ -57,8 +59,6 @@ const Checkout: React.FC = () => {
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errors = getValidationErrors(err);
-
-        console.log(errors);
 
         formRef.current?.setErrors(errors);
       }
