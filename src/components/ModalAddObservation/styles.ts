@@ -35,4 +35,22 @@ export const Form = styled(Unform)`
       margin: 0 auto;
     }
   }
+
+  @media only screen and (max-width: 425px) {
+    padding: 48px 20px;
+
+    h1 {
+      font-size: 24px;
+    }
+
+    > div {
+      margin: 0;
+    }
+
+    button {
+    .text {
+      padding: 10px 24px;
+    }
+
+  }
 `;
