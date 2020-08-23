@@ -30,6 +30,7 @@ interface CartContextData {
   cartSubtotal: number;
   totalItens: number;
   discountValue: number;
+  resetCart(): void;
   increment(id: number): void;
   decrement(id: number): void;
   removeFromCart(id: number): void;
@@ -278,6 +279,12 @@ export const CartProvider: React.FC = ({ children }) => {
     [products],
   );
 
+  const resetCart = useCallback(() => {
+    setProducts([]);
+    setCartSubtotal(0);
+    setCartTotal(0);
+  }, []);
+
   const value = useMemo(
     () => ({
       products,
@@ -289,6 +296,7 @@ export const CartProvider: React.FC = ({ children }) => {
       decrement,
       removeFromCart,
       addObservation,
+      resetCart,
     }),
     [
       products,
@@ -300,6 +308,7 @@ export const CartProvider: React.FC = ({ children }) => {
       decrement,
       removeFromCart,
       addObservation,
+      resetCart,
     ],
   );
 

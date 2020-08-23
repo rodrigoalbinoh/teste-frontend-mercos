@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 
+import { useHistory } from 'react-router-dom';
 import getValidationErrors from '../../utils/getValidationErrors';
 import Input from '../../components/Input';
 
@@ -21,6 +22,7 @@ import formatValue from '../../utils/formatValue';
 import { useCart } from '../../hooks/cart';
 import InputMask from '../../components/InputMask';
 import { useToast } from '../../hooks/toast';
+import api from '../../services/api';
 
 interface CheckoutData {
   rua: string;
@@ -30,40 +32,87 @@ interface CheckoutData {
   cvc: string;
 }
 
+interface CartItem {
+  id: number;
+  quantidade: number;
+  observacao: string;
+}
+
 const Checkout: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
-  const { cartTotal } = useCart();
+  const { products, cartTotal, resetCart } = useCart();
   const { addToast } = useToast();
+  const history = useHistory();
 
-  const handleSubmit = useCallback(async (data: CheckoutData) => {
-    try {
-      formRef.current?.setErrors({});
+  const handleSubmit = useCallback(
+    async (data: CheckoutData) => {
+      try {
+        formRef.current?.setErrors({});
 
-      const schema = Yup.object().shape({
-        rua: Yup.string().required('Rua é um campo obrigatório'),
-        numero: Yup.string().required('Número é um campo obrigatório'),
-        bairro: Yup.string().required('Bairro é um campo obrigatório'),
-        numero_cartao: Yup.string().required(
-          'Número do Cartão é um campo obrigatório',
-        ),
-        cvc: Yup.string().required(
-          'Código de verificação é um campo obrigatório',
-        ),
-      });
+        const schema = Yup.object().shape({
+          rua: Yup.string().required('Rua é um campo obrigatório'),
+          numero: Yup.string().required('Número é um campo obrigatório'),
+          bairro: Yup.string().required('Bairro é um campo obrigatório'),
+          numero_cartao: Yup.string().required(
+            'Número do Cartão é um campo obrigatório',
+          ),
+          cvc: Yup.string().required(
+            'Código de verificação é um campo obrigatório',
+          ),
+        });
 
-      await schema.validate(data, {
-        abortEarly: false,
-      });
+        await schema.validate(data, {
+          abortEarly: false,
+        });
 
-      console.log(data);
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(err);
+        const { bairro, rua, numero, numero_cartao, cvc } = data;
 
-        formRef.current?.setErrors(errors);
+        const cartItens: CartItem[] = products.map(
+          ({ id, quantidade, observacao }) => ({
+            id,
+            quantidade,
+            observacao: observacao || 'Sem observação',
+          }),
+        );
+
+        await api.post('/carrinho/', {
+          itens: cartItens,
+          endereco: {
+            rua,
+            bairro,
+            numero,
+          },
+          cartao: {
+            numero: numero_cartao,
+            cvc: Number(cvc),
+          },
+        });
+
+        addToast({
+          title: 'Compra finalizada!',
+          description: 'Sua compra foi finalizada, você será redirecionado!',
+          type: 'success',
+        });
+
+        resetCart();
+        history.push('/');
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+
+          formRef.current?.setErrors(errors);
+          return;
+        }
+
+        addToast({
+          title: 'Ops! Algo deu errado',
+          description: 'Não foi possível concluir sua compra. Tente novamente.',
+          type: 'error',
+        });
       }
-    }
-  }, []);
+    },
+    [addToast, history, products, resetCart],
+  );
 
   return (
     <Container>
