@@ -40,7 +40,7 @@ const CartItem: React.FC<CartItemProps> = ({
 }) => {
   const { increment, decrement, removeFromCart } = useCart();
 
-  const cartTotal = formatValue(quantidade * valor_unitario);
+  const productTotal = formatValue(quantidade * valor_unitario);
 
   function setAddingObservation(): void {
     handleAddObservation({
@@ -72,7 +72,7 @@ const CartItem: React.FC<CartItemProps> = ({
         </div>
       </QuantityContainer>
       <TotalDeleteContainer>
-        <strong>{cartTotal}</strong>
+        <strong>{productTotal}</strong>
         <button type="button" onClick={() => removeFromCart(id)}>
           <Delete />
         </button>
