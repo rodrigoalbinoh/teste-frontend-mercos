@@ -77,6 +77,8 @@ export const MenuContainer = styled.div`
     grid-template-areas:
       'MN MN CART'
       'SCH SCH SCH';
+    grid-column-gap: 5px;
+    grid-row-gap: 10px;
     padding: 10px 10px;
   }
 `;
