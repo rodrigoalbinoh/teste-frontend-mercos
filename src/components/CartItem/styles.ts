@@ -13,11 +13,23 @@ export const Container = styled.div`
   &:hover {
     background: #f5f5f5;
   }
+
+  @media only screen and (max-width: 425px) {
+    display: grid;
+    grid-template-areas:
+      'IMG PI PI'
+      'QT PR PR';
+    grid-gap: 5px;
+  }
 `;
 
 export const ProductImage = styled.img`
   width: 90px;
   height: 90px;
+
+  @media only screen and (max-width: 425px) {
+    grid-area: IMG;
+  }
 `;
 
 export const ProductInfo = styled.div`
@@ -60,11 +72,17 @@ export const ProductInfo = styled.div`
       margin-right: 10px;
     }
   }
+
+  @media only screen and (max-width: 425px) {
+    grid-area: PI;
+    margin-left: 0;
+  }
 `;
 
 export const QuantityContainer = styled.div`
   margin-left: 20px;
-  width: 120px;
+  max-width: 120px;
+  width: 100%;
 
   > div {
     padding: 2px;
@@ -85,6 +103,12 @@ export const QuantityContainer = styled.div`
         color: ${shade(0.2, '#e53935')};
       }
     }
+  }
+
+  @media only screen and (max-width: 425px) {
+    grid-area: QT;
+    margin-left: 0;
+    width: 90%;
   }
 `;
 
@@ -115,5 +139,13 @@ export const TotalDeleteContainer = styled.div`
     svg {
       font-size: 20px;
     }
+  }
+
+  @media only screen and (max-width: 425px) {
+    grid-area: PR;
+    margin-left: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 `;

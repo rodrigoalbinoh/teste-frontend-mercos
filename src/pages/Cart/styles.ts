@@ -13,12 +13,21 @@ export const Container = styled.div`
     line-height: 40px;
     letter-spacing: -1.5px;
   }
+
+  @media only screen and (max-width: 1024px) {
+    padding: 30px 20px;
+  }
 `;
 
 export const Content = styled.div`
   margin-top: 30px;
   display: flex;
   justify-content: space-between;
+
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 export const CartItems = styled.div`
@@ -31,16 +40,28 @@ export const CartItems = styled.div`
     justify-content: center;
     color: #616161;
   }
+
+  @media only screen and (min-width: 769px) and (max-width: 1024px) {
+    width: 65%;
+  }
 `;
 
 export const CartSummary = styled.aside`
   max-width: 320px;
-  width: 100vw;
+  width: 100%;
   height: 300px;
   border: 1px solid #e0e0e0;
 
   > div {
     padding: 20px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    margin-top: 20px;
+  }
+
+  @media only screen and (min-width: 769px) and (max-width: 1024px) {
+    width: 30%;
   }
 `;
 
