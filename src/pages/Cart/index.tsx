@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { ShoppingCart } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import { useCart } from '../../hooks/cart';
 import formatValue from '../../utils/formatValue';
@@ -62,19 +62,26 @@ const Cart: React.FC = () => {
       <h1>Carrinho</h1>
       <Content>
         <CartItems>
-          {products.map((product) => (
-            <CartItem
-              key={product.id}
-              id={product.id}
-              nome={product.nome}
-              quantidade={product.quantidade}
-              sku={product.sku}
-              url_imagem={product.url_imagem}
-              valor_unitario={product.valor_unitario}
-              observacao={product.observacao}
-              handleAddObservation={setAddingObservation}
-            />
-          ))}
+          {products.length === 0 ? (
+            <span>
+              <ShoppingCart />
+              Carrinho vazio
+            </span>
+          ) : (
+            products.map((product) => (
+              <CartItem
+                key={product.id}
+                id={product.id}
+                nome={product.nome}
+                quantidade={product.quantidade}
+                sku={product.sku}
+                url_imagem={product.url_imagem}
+                valor_unitario={product.valor_unitario}
+                observacao={product.observacao}
+                handleAddObservation={setAddingObservation}
+              />
+            ))
+          )}
         </CartItems>
 
         <CartSummary>

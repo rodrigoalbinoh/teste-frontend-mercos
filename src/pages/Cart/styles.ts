@@ -24,6 +24,13 @@ export const Content = styled.div`
 export const CartItems = styled.div`
   max-width: 690px;
   width: 100%;
+
+  > span {
+    display: flex;
+    place-items: center;
+    justify-content: center;
+    color: #616161;
+  }
 `;
 
 export const CartSummary = styled.aside`
