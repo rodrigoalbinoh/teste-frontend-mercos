@@ -82,6 +82,8 @@ export const CartProvider: React.FC = ({ children }) => {
           applicableDiscounts.push(discount);
         }
       }
+
+      return null;
     });
 
     if (applicableDiscounts.length) {
