@@ -44,28 +44,38 @@ export const CartProvider: React.FC = ({ children }) => {
   const [cartSubtotal, setCartSubtotal] = useState(0);
   const [discountValue, setDiscountValue] = useState(0);
   const [discountRules, setDiscountRules] = useState<Discount[]>([]);
-  const [products, setProducts] = useState<Product[]>(() => {
-    const loadedProducts = localStorage.getItem('@TesteMercos:products');
+  const [totalItens, setTotalItens] = useState(0);
+  const [products, setProducts] = useState<Product[]>([]);
 
-    if (loadedProducts) {
-      return JSON.parse(loadedProducts);
+  useEffect(() => {
+    async function loadProducts(): Promise<void> {
+      const response = await api.get('/carrinho/');
+
+      const loadedProducts = response.data.map((product: Product) => {
+        const {
+          sku,
+          quantidade,
+          nome,
+          valor_unitario,
+          url_imagem,
+          id,
+        } = product;
+
+        return {
+          sku,
+          quantidade,
+          nome,
+          valor_unitario,
+          url_imagem,
+          id,
+          observacao: '',
+        };
+      });
+
+      setProducts(loadedProducts);
     }
-  });
-
-  const totalItens = useMemo(() => {
-    const { total } = products.reduce(
-      (accumulator, product) => {
-        accumulator.total += product.quantidade;
-
-        return accumulator;
-      },
-      {
-        total: 0,
-      },
-    );
-
-    return total;
-  }, [products]);
+    loadProducts();
+  }, []);
 
   useEffect(() => {
     const applicableDiscounts: Discount[] = [];
@@ -122,41 +132,18 @@ export const CartProvider: React.FC = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    async function loadProducts(): Promise<void> {
-      const response = await api.get('/carrinho/');
+    const { total } = products.reduce(
+      (accumulator, product) => {
+        accumulator.total += product.quantidade;
 
-      const loadedProducts = response.data.map((product: Product) => {
-        const {
-          sku,
-          quantidade,
-          nome,
-          valor_unitario,
-          url_imagem,
-          id,
-        } = product;
+        return accumulator;
+      },
+      {
+        total: 0,
+      },
+    );
 
-        return {
-          sku,
-          quantidade,
-          nome,
-          valor_unitario,
-          url_imagem,
-          id,
-          observacao: '',
-        };
-      });
-
-      setProducts(loadedProducts);
-    }
-    loadProducts();
-  }, []);
-
-  useEffect(() => {
-    function updateLocalStorage(): void {
-      localStorage.setItem('@TesteMercos:products', JSON.stringify(products));
-    }
-
-    updateLocalStorage();
+    setTotalItens(total);
   }, [products]);
 
   useEffect(() => {
