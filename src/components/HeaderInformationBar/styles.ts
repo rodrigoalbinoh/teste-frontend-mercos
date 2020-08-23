@@ -24,4 +24,14 @@ export const InnerContainer = styled.div`
       margin-right: 5px;
     }
   }
+
+  @media only screen and (max-width: 425px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 20px;
+
+    span {
+      margin-top: 5px;
+    }
+  }
 `;

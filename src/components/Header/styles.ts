@@ -5,6 +5,10 @@ export const Container = styled.header``;
 export const ContainerContent = styled.div`
   max-width: 1180px;
   margin: 0 auto;
+
+  @media only screen and (max-width: 1024px) {
+    padding: 0 10px;
+  }
 `;
 
 export const Topbar = styled.div`
@@ -13,6 +17,10 @@ export const Topbar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media only screen and (max-width: 425px) {
+    flex-direction: column;
+  }
 `;
 
 export const ContactInfo = styled.span`
@@ -28,6 +36,10 @@ export const ContactInfo = styled.span`
 
 export const UserInfo = styled.div`
   display: flex;
+
+  @media only screen and (max-width: 425px) {
+    margin-top: 5px;
+  }
 
   span {
     display: flex;
@@ -59,11 +71,23 @@ export const MenuContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   padding: 10px 0;
+
+  @media only screen and (max-width: 425px) {
+    grid-template-columns: initial;
+    grid-template-areas:
+      'MN MN CART'
+      'SCH SCH SCH';
+    padding: 10px 10px;
+  }
 `;
 
 export const MenuLinks = styled.div`
   display: flex;
   align-items: center;
+
+  @media only screen and (max-width: 425px) {
+    grid-area: MN;
+  }
 
   a {
     display: flex;
@@ -87,9 +111,14 @@ export const MenuLinks = styled.div`
 `;
 
 export const SearchContainer = styled.div`
+  @media only screen and (max-width: 425px) {
+    grid-area: SCH;
+  }
+
   form {
     display: flex;
-    width: 450px;
+    max-width: 450px;
+    width: 100%;
     border-bottom: 1px solid #212121;
 
     input {
@@ -116,6 +145,10 @@ export const CartContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  @media only screen and (max-width: 425px) {
+    grid-area: CART;
+  }
 
   a {
     display: inline-flex;
