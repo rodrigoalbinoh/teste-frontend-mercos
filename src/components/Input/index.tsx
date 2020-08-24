@@ -40,8 +40,16 @@ const Input: React.FC<InputProps> = ({ name, label, ...rest }) => {
 
   return (
     <Container>
-      {label && <label htmlFor={fieldName}>{label}</label>}
-      <Field isFocused={isFocused} isErrored={!!error}>
+      {label && (
+        <label htmlFor={fieldName} data-testid="input-label">
+          {label}
+        </label>
+      )}
+      <Field
+        isFocused={isFocused}
+        isErrored={!!error}
+        data-testid="input-container"
+      >
         <input
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}

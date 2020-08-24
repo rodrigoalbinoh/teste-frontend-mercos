@@ -36,13 +36,20 @@ const InputMask: React.FC<Props> = ({ name, label, ...rest }) => {
   }, [fieldName, registerField]);
   return (
     <Container>
-      <label htmlFor={fieldName}>{label}</label>
-      <Field isFocused={isFocused} isErrored={!!error}>
+      <label htmlFor={fieldName} data-testid="input-label">
+        {label}
+      </label>
+      <Field
+        isFocused={isFocused}
+        isErrored={!!error}
+        data-testid="input-container"
+      >
         <ReactInputMask
           ref={inputRef}
           defaultValue={defaultValue}
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
+          data-testid="input"
           {...rest}
         />
       </Field>
