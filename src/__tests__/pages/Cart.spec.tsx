@@ -9,6 +9,22 @@ import { useCart } from '../../hooks/cart';
 const mockedHistoryPush = jest.fn();
 const useCartMocked = mocked(useCart);
 
+jest.mock('../../hooks/cart.tsx', () => ({
+  __esModule: true,
+  useCart: jest.fn().mockReturnValue({
+    products: [],
+    totalItens: 0,
+    cartSubtotal: 0,
+    discountValue: 0,
+    cartTotal: 0,
+    increment: jest.fn(),
+    decrement: jest.fn(),
+    addObservation: jest.fn(),
+    removeFromCart: jest.fn(),
+    resetCart: jest.fn(),
+  }),
+}));
+
 jest.mock('react-router-dom', () => {
   return {
     useHistory: () => ({
