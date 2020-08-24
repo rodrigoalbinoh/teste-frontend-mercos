@@ -62,7 +62,7 @@ const Cart: React.FC = () => {
       <h1>Carrinho</h1>
       <Content>
         <CartItems>
-          {products.length === 0 ? (
+          {!products ? (
             <span>
               <ShoppingCart />
               Carrinho vazio
