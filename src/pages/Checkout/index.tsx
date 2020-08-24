@@ -138,12 +138,14 @@ const Checkout: React.FC = () => {
                   label="Número do Cartão"
                   placeholder="____ ____ ____ ____"
                   mask="9999 9999 9999 9999"
+                  data-testid="card-number"
                 />
                 <InputMask
                   name="cvc"
                   label="Código de Segurança"
                   placeholder="CVC"
                   mask="999"
+                  data-testid="card-cvc"
                 />
               </div>
               <Total>
