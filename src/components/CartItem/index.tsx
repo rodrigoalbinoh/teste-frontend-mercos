@@ -55,7 +55,11 @@ const CartItem: React.FC<CartItemProps> = ({
       <ProductInfo>
         <strong>{nome}</strong>
         <span>SKU: {sku}</span>
-        <button type="button" onClick={() => setAddingObservation()}>
+        <button
+          type="button"
+          onClick={() => setAddingObservation()}
+          data-testid={`add-observation-${id}`}
+        >
           <ChatBubbleOutline />
           Adicionar descrição
         </button>
