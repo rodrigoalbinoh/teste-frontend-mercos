@@ -71,13 +71,7 @@ const Cart: React.FC = () => {
             products.map((product) => (
               <CartItem
                 key={product.id}
-                id={product.id}
-                nome={product.nome}
-                quantidade={product.quantidade}
-                sku={product.sku}
-                url_imagem={product.url_imagem}
-                valor_unitario={product.valor_unitario}
-                observacao={product.observacao}
+                product={product}
                 handleAddObservation={setAddingObservation}
               />
             ))

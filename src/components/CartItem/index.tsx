@@ -13,13 +13,15 @@ import {
 } from './styles';
 
 interface CartItemProps {
-  id: number;
-  sku: string;
-  nome: string;
-  quantidade: number;
-  valor_unitario: number;
-  url_imagem: string;
-  observacao: string;
+  product: {
+    id: number;
+    sku: string;
+    nome: string;
+    quantidade: number;
+    valor_unitario: number;
+    url_imagem: string;
+    observacao: string;
+  };
   handleAddObservation: (product: ProductObservation) => void;
 }
 
@@ -29,16 +31,19 @@ interface ProductObservation {
 }
 
 const CartItem: React.FC<CartItemProps> = ({
-  id,
-  sku,
-  nome,
-  quantidade,
-  valor_unitario,
-  url_imagem,
-  observacao,
+  product,
   handleAddObservation,
 }) => {
   const { increment, decrement, removeFromCart } = useCart();
+  const {
+    id,
+    sku,
+    nome,
+    quantidade,
+    valor_unitario,
+    url_imagem,
+    observacao,
+  } = product;
 
   const productTotal = formatValue(quantidade * valor_unitario);
 
