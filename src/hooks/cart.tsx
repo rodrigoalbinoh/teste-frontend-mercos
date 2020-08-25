@@ -40,34 +40,20 @@ interface CartContextData {
 const CartContext = createContext<CartContextData>({} as CartContextData);
 
 export const CartProvider: React.FC = ({ children }) => {
+  const [products, setProducts] = useState<Product[]>([]);
   const [cartTotal, setCartTotal] = useState(0);
   const [cartSubtotal, setCartSubtotal] = useState(0);
+  const [totalItens, setTotalItens] = useState(0);
   const [discountValue, setDiscountValue] = useState(0);
   const [discountRules, setDiscountRules] = useState<Discount[]>([]);
-  const [totalItens, setTotalItens] = useState(0);
-  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     async function loadProducts(): Promise<void> {
       const response = await api.get('/carrinho/');
 
       const loadedProducts = response.data.map((product: Product) => {
-        const {
-          sku,
-          quantidade,
-          nome,
-          valor_unitario,
-          url_imagem,
-          id,
-        } = product;
-
         return {
-          sku,
-          quantidade,
-          nome,
-          valor_unitario,
-          url_imagem,
-          id,
+          ...product,
           observacao: '',
         };
       });
@@ -167,25 +153,13 @@ export const CartProvider: React.FC = ({ children }) => {
     async (id) => {
       const productIndex = products.findIndex((product) => product.id === id);
 
-      const {
-        nome,
-        quantidade,
-        sku,
-        url_imagem,
-        valor_unitario,
-        observacao,
-      } = products[productIndex];
+      const originalProduct = products[productIndex];
 
       const productsModified = [...products];
-      const quantityModified = quantidade + 1;
+      const quantityModified = originalProduct.quantidade + 1;
 
       productsModified[productIndex] = {
-        id,
-        nome,
-        sku,
-        url_imagem,
-        valor_unitario,
-        observacao,
+        ...originalProduct,
         quantidade: quantityModified,
       };
 
@@ -198,16 +172,9 @@ export const CartProvider: React.FC = ({ children }) => {
     async (id) => {
       const productIndex = products.findIndex((product) => product.id === id);
 
-      const {
-        nome,
-        quantidade,
-        sku,
-        url_imagem,
-        observacao,
-        valor_unitario,
-      } = products[productIndex];
+      const originalProduct = products[productIndex];
 
-      if (quantidade === 1) {
+      if (originalProduct.quantidade === 1) {
         const productsFiltered = products.filter(
           (product) => product.id !== id,
         );
@@ -216,15 +183,10 @@ export const CartProvider: React.FC = ({ children }) => {
       } else {
         const productsModified = [...products];
 
-        const quantityModified = quantidade - 1;
+        const quantityModified = originalProduct.quantidade - 1;
 
         productsModified[productIndex] = {
-          id,
-          nome,
-          sku,
-          url_imagem,
-          valor_unitario,
-          observacao,
+          ...originalProduct,
           quantidade: quantityModified,
         };
 
@@ -247,19 +209,12 @@ export const CartProvider: React.FC = ({ children }) => {
     async ({ id, observacao }) => {
       const productIndex = products.findIndex((product) => product.id === id);
 
-      const { nome, quantidade, sku, url_imagem, valor_unitario } = products[
-        productIndex
-      ];
+      const originalProduct = products[productIndex];
 
       const productsModified = [...products];
 
       productsModified[productIndex] = {
-        id,
-        nome,
-        sku,
-        url_imagem,
-        valor_unitario,
-        quantidade,
+        ...originalProduct,
         observacao,
       };
 
